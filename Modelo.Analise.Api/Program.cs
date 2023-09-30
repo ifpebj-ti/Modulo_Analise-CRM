@@ -1,8 +1,18 @@
+using Microsoft.EntityFrameworkCore;
+using Modelo.Analise.Api.Repository;
+using Modelo.Analise.Api.Repository.implementation;
+using Modelo.Analise.Api.Repository.Interface;
+
 var builder = WebApplication.CreateBuilder(args);
 
+//configuracao para context do banco de dados
+builder.Services.AddDbContext<ContextBd>(options =>
+    options.UseNpgsql(builder.Configuration["ConnectionStrings"])
+);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
