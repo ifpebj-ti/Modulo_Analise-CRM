@@ -25,5 +25,7 @@ namespace Modelo.Analise.Api.Repository
         //}
         public DbSet<cliente> cliente { get; set; }
         public DbSet<enderecos> enderecos { get; set; }
+        public DbSet<categoria_produto> categoria_Produtos { get; set; }
+        public DbSet<venda> venda { get; set; }
     }
 }
