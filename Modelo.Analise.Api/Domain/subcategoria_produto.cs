@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Modelo.Analise.Api.Domain
 {
-    public class categoria_produto
+    public class subcategoria_produto
     {
         [Key]
-        public int id_categoria { get; set; }
-        public string nome { get; set; }
+        public int id_subcategoria { get; set; }
+        public string nome_subcategoria { get; set; }
     }
 }

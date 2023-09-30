@@ -25,7 +25,13 @@ namespace Modelo.Analise.Api.Repository
         //}
         public DbSet<cliente> cliente { get; set; }
         public DbSet<enderecos> enderecos { get; set; }
-        public DbSet<categoria_produto> categoria_Produtos { get; set; }
+        public DbSet<categoria_produto> categoria_produto { get; set; }
+        public DbSet<item_venda> item_venda { get; set; }
+        public DbSet<produto> produto { get; set; }
+        public DbSet<produto_em_promocao> produto_em_promocao { get; set; }
+
+        public DbSet<subcategoria_produto> subcategoria_produto { get; set; }
+        public DbSet<usuario> usuario { get; set; }
         public DbSet<venda> venda { get; set; }
     }
 }

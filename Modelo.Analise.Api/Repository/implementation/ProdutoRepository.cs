@@ -4,19 +4,18 @@ using Modelo.Analise.Api.Repository.Interface;
 
 namespace Modelo.Analise.Api.Repository.implementation
 {
-    public class VendaRepository : IVendaRepository
+    public class ProdutoRepository : IProdutoRepository
     {
         private readonly ContextBd _context;
-        public VendaRepository(ContextBd context)
+
+        public ProdutoRepository(ContextBd context)
         {
             _context = context;
         }
-        public async Task<List<venda>> GetVendas()
+        public async Task<List<produto>> GetProdutos()
         {
-            List<venda> vendas = await _context.venda.Take(100)
-                .ToListAsync();
-
-            return vendas;
+            List<produto> produtos = await _context.produto.ToListAsync();
+            return produtos;
         }
     }
 }
