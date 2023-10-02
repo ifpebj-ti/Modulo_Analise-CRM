@@ -15,8 +15,24 @@ namespace Modelo.Analise.Api.Repository.implementation
         {
             List<venda> vendas = await _context.venda.Take(100)
                 .ToListAsync();
-
             return vendas;
+        }
+        public async Task<int> ObterQuantidadeDeVendasComparadoMesAnterior()
+        {
+            try
+            {
+                var MesAnterior = await _context.venda.Where(v => v.data.Month == DateTime.Now.Month - 1).ToListAsync();
+                var qtdMesAnterior = MesAnterior.Sum(s => s.total_venda);
+                var MesAtual = await _context.venda.Where(v => v.data.Month == DateTime.Now.Month).ToListAsync();
+                var qtdMesAtual = MesAtual.Sum(s => s.total_venda);
+                var qtdComparado = qtdMesAtual - qtdMesAnterior;
+                return qtdComparado;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

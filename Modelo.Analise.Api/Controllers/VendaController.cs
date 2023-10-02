@@ -20,5 +20,13 @@ namespace Modelo.Analise.Api.Controllers
 
             return Ok(vendas);
         }
+        [HttpGet]
+        [Route("ObterQtdComparadoMesAnterior")]
+        public async Task<IActionResult> ObterQtdVendasComparadoMesAnterior()
+        {
+            int qtd = await _vendaRepository.ObterQuantidadeDeVendasComparadoMesAnterior();
+
+            return Ok(qtd);
+        }
     }
 }
