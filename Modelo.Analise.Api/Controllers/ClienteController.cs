@@ -3,6 +3,7 @@ using Modelo.Analise.Api.Domain;
 using Modelo.Analise.Api.Repository.Interface;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Modelo.Analise.Api.Repository.implementation;
 
 namespace Modelo.Analise.Api.Controllers
 {
@@ -23,6 +24,14 @@ namespace Modelo.Analise.Api.Controllers
             return Ok(clientes);
         }
 
+        [HttpGet]
+        [Route("ObterQtdClientesComparadoMesAnterior")]
+        public async Task<IActionResult> ObterQtdClientesComparadoMesAnterior()
+        {
+            int qtd = await _clienteRepository.ObterQuantidadeDeClientesComparadoMesAnterior();
+
+            return Ok(qtd);
+        }
 
     }
 }

@@ -18,5 +18,23 @@ namespace Modelo.Analise.Api.Repository.implementation
 
             return clientes;
         }
+
+        public async Task<int> ObterQuantidadeDeClientesComparadoMesAnterior()
+        {
+            try
+            {
+                var MesAnterior = await _context.cliente.Where(c => c.data_registro.Month == DateTime.Now.Month - 1).CountAsync();
+
+                var MesAtual = await _context.cliente.Where(c => c.data_registro.Month == DateTime.Now.Month).CountAsync();
+              
+                var qtdComparado = MesAtual - MesAnterior;
+                return qtdComparado;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

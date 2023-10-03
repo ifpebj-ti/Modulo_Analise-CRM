@@ -21,11 +21,9 @@ namespace Modelo.Analise.Api.Repository.implementation
         {
             try
             {
-                var MesAnterior = await _context.venda.Where(v => v.data.Month == DateTime.Now.Month - 1).ToListAsync();
-                var qtdMesAnterior = MesAnterior.Sum(s => s.total_venda);
-                var MesAtual = await _context.venda.Where(v => v.data.Month == DateTime.Now.Month).ToListAsync();
-                var qtdMesAtual = MesAtual.Sum(s => s.total_venda);
-                var qtdComparado = qtdMesAtual - qtdMesAnterior;
+                var MesAnterior = await _context.venda.Where(v => v.data.Month == DateTime.Now.Month - 1).SumAsync(s => s.total_venda);
+                var MesAtual = await _context.venda.Where(v => v.data.Month == DateTime.Now.Month).SumAsync(s => s.total_venda);
+                var qtdComparado = MesAtual - MesAnterior;
                 return qtdComparado;
             }
             catch (Exception ex)
