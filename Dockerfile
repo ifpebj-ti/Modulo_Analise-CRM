@@ -13,4 +13,4 @@ WORKDIR /app
 COPY --from=build-env /app/out .
 
 
-ENTRYPOINT ["dotnet", "Modulo.Analise.Api.dll"]
+ENTRYPOINT ["dotnet", "Modelo.Analise.Api.dll"]
