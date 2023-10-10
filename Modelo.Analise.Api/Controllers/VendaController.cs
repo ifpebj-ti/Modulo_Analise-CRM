@@ -28,5 +28,13 @@ namespace Modelo.Analise.Api.Controllers
 
             return Ok(qtd);
         }
+        [HttpGet]
+        [Route("ObterTopCincoVendas")]
+        public async Task<IActionResult> ObterTopCincoVendas()
+        {
+            var top = await _vendaRepository.ObterTopCincoVendas();
+
+            return Ok(top);
+        }
     }
 }

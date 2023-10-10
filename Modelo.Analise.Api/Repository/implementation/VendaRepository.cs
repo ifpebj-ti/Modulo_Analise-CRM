@@ -32,5 +32,16 @@ namespace Modelo.Analise.Api.Repository.implementation
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<List<venda>> ObterTopCincoVendas()
+        {
+            var top = await _context.venda
+                       .Where(v => v.data.Month == DateTime.Now.Month)
+                       .OrderByDescending(v => v.total_venda)
+                       .Take(5)
+                       .ToListAsync();
+
+            return top;
+        }
     }
 }
