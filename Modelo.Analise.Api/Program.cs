@@ -15,6 +15,21 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IVendaRepository, VendaRepository>();
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
+
+//Adicionando cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "PolicyApp",
+        policy =>
+        {
+            policy.WithOrigins("*")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+
+        }
+
+    );
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -27,7 +42,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+//utilizando cors
+app.UseCors("PolicyApp");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
