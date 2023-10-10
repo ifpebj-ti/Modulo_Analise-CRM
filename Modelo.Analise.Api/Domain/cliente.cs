@@ -15,7 +15,7 @@ namespace Modelo.Analise.Api.Domain
         public DateTime data_nascimento { get; set; }
         public string telefone { get; set; }
         public string email { get; set; }
-        public DateTime data_registro { get; set; }
+        public Nullable<System.DateTime> data_registro { get; set; }
         [ForeignKey("id_endereco")]
         public  virtual enderecos enderecos { get; set; }
 

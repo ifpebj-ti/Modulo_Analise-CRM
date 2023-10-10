@@ -23,9 +23,9 @@ namespace Modelo.Analise.Api.Repository.implementation
         {
             try
             {
-                var MesAnterior = await _context.cliente.Where(c => c.data_registro.Month == DateTime.Now.Month - 1).CountAsync();
+                var MesAnterior = await _context.cliente.Where(c => c.data_registro.Value.Month == DateTime.Now.Month - 1).CountAsync();
 
-                var MesAtual = await _context.cliente.Where(c => c.data_registro.Month == DateTime.Now.Month).CountAsync();
+                var MesAtual = await _context.cliente.Where(c => c.data_registro.Value.Month == DateTime.Now.Month).CountAsync();
               
                 var qtdComparado = MesAtual - MesAnterior;
                 return qtdComparado;
