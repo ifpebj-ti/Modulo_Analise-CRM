@@ -17,7 +17,7 @@ namespace Modelo.Analise.Api.Repository.implementation
                 .ToListAsync();
             return vendas;
         }
-        public async Task<int> ObterQuantidadeDeVendasComparadoMesAnterior()
+        public async Task<decimal> ObterQuantidadeDeVendasComparadoMesAnterior()
         {
             try
             {
@@ -37,9 +37,17 @@ namespace Modelo.Analise.Api.Repository.implementation
         {
             var top = await _context.venda
                        .Where(v => v.data.Month == DateTime.Now.Month)
-                       .OrderByDescending(v => v.total_venda)
+                       .GroupBy(c => c.cliente)
+                       .Select(g => new venda
+                       {
+                           cliente = g.Key,
+                           total_venda = g.Sum(v => v.total_venda)
+                       })
+                       .OrderByDescending(g => g.total_venda)
                        .Take(5)
                        .ToListAsync();
+
+
 
             return top;
         }
