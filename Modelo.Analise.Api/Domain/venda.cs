@@ -10,7 +10,7 @@ namespace Modelo.Analise.Api.Domain
         public string nome_vendedor { get; set; }
         public DateTime data { get; set; }
         public string forma_de_pagamento { get; set; }
-        public int total_venda { get; set; }
+        public decimal total_venda { get; set; }
 
         [ForeignKey("id_cliente")]
         public virtual cliente? cliente { get; set; }

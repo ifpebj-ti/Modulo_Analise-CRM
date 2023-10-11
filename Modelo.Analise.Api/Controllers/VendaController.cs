@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Modelo.Analise.Api.Domain;
+using Modelo.Analise.Api.Model;
 using Modelo.Analise.Api.Repository.Interface;
 
 namespace Modelo.Analise.Api.Controllers
@@ -24,7 +25,7 @@ namespace Modelo.Analise.Api.Controllers
         [Route("ObterQtdComparadoMesAnterior")]
         public async Task<IActionResult> ObterQtdVendasComparadoMesAnterior()
         {
-            int qtd = await _vendaRepository.ObterQuantidadeDeVendasComparadoMesAnterior();
+            var qtd = await _vendaRepository.ObterQuantidadeDeVendasComparadoMesAnterior();
 
             return Ok(qtd);
         }
@@ -33,8 +34,14 @@ namespace Modelo.Analise.Api.Controllers
         public async Task<IActionResult> ObterTopCincoVendas()
         {
             var top = await _vendaRepository.ObterTopCincoVendas();
+            var lista = top.Select(venda => new VendaModel()
+            {
+                NomeClienteCompleto = venda.cliente?.nome_completo != null ? venda.cliente.nome_completo : "-",
+                ValorVenda = venda.total_venda
+            });
 
-            return Ok(top);
+
+            return Ok(lista.ToList());
         }
     }
 }
