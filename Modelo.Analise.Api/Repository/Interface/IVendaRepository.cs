@@ -6,5 +6,6 @@ namespace Modelo.Analise.Api.Repository.Interface
     {
         Task<List<venda>> GetVendas();
         Task<int> ObterQuantidadeDeVendasComparadoMesAnterior();
+        Task<List<venda>> ObterTopCincoVendas();
     }
 }

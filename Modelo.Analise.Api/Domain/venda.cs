@@ -12,6 +12,9 @@ namespace Modelo.Analise.Api.Domain
         public string forma_de_pagamento { get; set; }
         public int total_venda { get; set; }
 
+        [ForeignKey("id_cliente")]
+        public virtual cliente? cliente { get; set; }
+
         [ForeignKey("id_filial")]
         public virtual filial filial { get; set; }
     }
