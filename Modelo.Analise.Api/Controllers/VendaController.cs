@@ -22,10 +22,10 @@ namespace Modelo.Analise.Api.Controllers
             return Ok(vendas);
         }
         [HttpGet]
-        [Route("ObterQtdComparadoMesAnterior")]
-        public async Task<IActionResult> ObterQtdVendasComparadoMesAnterior()
+        [Route("ObterFaturamentoComparadoMesAnterior")]
+        public async Task<IActionResult> ObterFaturamentoComparadoMesAnterior()
         {
-            var qtd = await _vendaRepository.ObterQuantidadeDeVendasComparadoMesAnterior();
+            var qtd = await _vendaRepository.ObterFaturamentoDeVendasComparadoMesAnterior();
 
             return Ok(qtd);
         }
@@ -42,6 +42,13 @@ namespace Modelo.Analise.Api.Controllers
 
 
             return Ok(lista.ToList());
+        }
+        [HttpGet]
+        [Route("ObterQtdVendasComparadoMesAnterior")]
+        public async Task<IActionResult> ObterQtdVendasComparadoMesAnterior()
+        {
+            var qtd = await _vendaRepository.ObterQtdDeVendasComparadoMesAnterior();
+            return Ok(qtd);
         }
     }
 }

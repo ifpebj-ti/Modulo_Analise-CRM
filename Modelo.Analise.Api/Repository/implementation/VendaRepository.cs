@@ -17,7 +17,7 @@ namespace Modelo.Analise.Api.Repository.implementation
                 .ToListAsync();
             return vendas;
         }
-        public async Task<decimal> ObterQuantidadeDeVendasComparadoMesAnterior()
+        public async Task<decimal> ObterFaturamentoDeVendasComparadoMesAnterior()
         {
             try
             {
@@ -50,6 +50,21 @@ namespace Modelo.Analise.Api.Repository.implementation
 
 
             return top;
+        }
+        public async Task<int> ObterQtdDeVendasComparadoMesAnterior()
+        {
+            try
+            {
+                var MesAnterior = await _context.venda.Where(v => v.data.Month == DateTime.Now.Month - 1).CountAsync();
+                var MesAtual = await _context.venda.Where(v => v.data.Month == DateTime.Now.Month).CountAsync();
+                var qtdComparado = MesAtual - MesAnterior;
+                return qtdComparado;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
