@@ -36,7 +36,7 @@ namespace Modelo.Analise.Api.Controllers
             var top = await _vendaRepository.ObterTopCincoVendas();
             var lista = top.Select(venda => new VendaModel()
             {
-                NomeClienteCompleto = venda.cliente?.nome_completo != null ? venda.cliente.nome_completo : "-",
+                NomeClienteCompleto = venda.cliente?.nome_completo != null ? venda.cliente.nome_completo : "Não informado",
                 ValorVenda = venda.total_venda
             });
 
@@ -49,6 +49,13 @@ namespace Modelo.Analise.Api.Controllers
         {
             var qtd = await _vendaRepository.ObterQtdDeVendasComparadoMesAnterior();
             return Ok(qtd);
+        }
+        [HttpGet]
+        [Route("ObterFrequenciaVendas")]
+        public async Task<IActionResult> ObterFrequenciaVendas()
+        {
+            var dadosFrequencia = await _vendaRepository.ObterDadosGraficoFrequencia();
+            return Ok(dadosFrequencia);
         }
     }
 }
