@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Modelo.Analise.Api.Domain;
+using Modelo.Analise.Api.Model;
 using Modelo.Analise.Api.Repository.Interface;
 
 namespace Modelo.Analise.Api.Repository.implementation
@@ -17,7 +18,7 @@ namespace Modelo.Analise.Api.Repository.implementation
                 .ToListAsync();
             return vendas;
         }
-        public async Task<decimal> ObterQuantidadeDeVendasComparadoMesAnterior()
+        public async Task<decimal> ObterFaturamentoDeVendasComparadoMesAnterior()
         {
             try
             {
@@ -50,6 +51,35 @@ namespace Modelo.Analise.Api.Repository.implementation
 
 
             return top;
+        }
+        public async Task<int> ObterQtdDeVendasComparadoMesAnterior()
+        {
+            try
+            {
+                var MesAnterior = await _context.venda.Where(v => v.data.Month == DateTime.Now.Month - 1).CountAsync();
+                var MesAtual = await _context.venda.Where(v => v.data.Month == DateTime.Now.Month).CountAsync();
+                var qtdComparado = MesAtual - MesAnterior;
+                return qtdComparado;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<List<VendaModel>> ObterDadosGraficoFrequencia()
+        {
+            var dados = await _context.venda
+                        .GroupBy(c => c.cliente)
+                        .Select(g => new VendaModel
+                        {
+                            NomeClienteCompleto = g.Key.nome_completo != null ? g.Key.nome_completo : "Não informado",
+                            FrequenciaVenda = g.Count(),
+                            ValorVenda = g.Sum(v => v.total_venda)
+                        })
+                        .OrderByDescending(g => g.ValorVenda)
+                        .ToListAsync();
+            return dados;
         }
     }
 }
