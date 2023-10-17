@@ -28,7 +28,7 @@ namespace Modelo.Analise.Api.Controllers
         [Route("ObterQtdClientesComparadoMesAnterior")]
         public async Task<IActionResult> ObterQtdClientesComparadoMesAnterior()
         {
-            int qtd = await _clienteRepository.ObterQuantidadeDeClientesComparadoMesAnterior();
+            var qtd = await _clienteRepository.ObterQuantidadeDeClientesComparadoMesAnterior();
 
             return Ok(qtd);
         }
