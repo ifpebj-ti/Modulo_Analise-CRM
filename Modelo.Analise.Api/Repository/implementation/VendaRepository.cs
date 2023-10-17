@@ -18,14 +18,31 @@ namespace Modelo.Analise.Api.Repository.implementation
                 .ToListAsync();
             return vendas;
         }
-        public async Task<decimal> ObterFaturamentoDeVendasComparadoMesAnterior()
+        public async Task<ResultadoModel> ObterFaturamentoDeVendasComparadoMesAnterior()
         {
             try
             {
+                var resultado = new ResultadoModel();
                 var MesAnterior = await _context.venda.Where(v => v.data.Month == DateTime.Now.Month - 1).SumAsync(s => s.total_venda);
                 var MesAtual = await _context.venda.Where(v => v.data.Month == DateTime.Now.Month).SumAsync(s => s.total_venda);
-                var qtdComparado = MesAtual - MesAnterior;
-                return qtdComparado;
+  
+                if (MesAtual != 0 && MesAnterior != 0)
+                {
+                    var qtdComparado = MesAtual - MesAnterior;
+                    decimal porcentagemAumento = ((decimal)qtdComparado / MesAnterior) * 100;
+
+
+                    resultado.FaturamentoComparado = qtdComparado;
+                    resultado.PorcentagemAumento = Math.Round(porcentagemAumento, 2);
+
+                    return resultado;
+                }
+                else
+                {
+                    resultado.QuantidadeComparado = 0;
+                    resultado.PorcentagemAumento = 0;
+                    return resultado;
+                }
             }
             catch (Exception ex)
             {
@@ -52,14 +69,32 @@ namespace Modelo.Analise.Api.Repository.implementation
 
             return top;
         }
-        public async Task<int> ObterQtdDeVendasComparadoMesAnterior()
+        public async Task<ResultadoModel> ObterQtdDeVendasComparadoMesAnterior()
         {
             try
             {
+                var resultado = new ResultadoModel();
                 var MesAnterior = await _context.venda.Where(v => v.data.Month == DateTime.Now.Month - 1).CountAsync();
                 var MesAtual = await _context.venda.Where(v => v.data.Month == DateTime.Now.Month).CountAsync();
-                var qtdComparado = MesAtual - MesAnterior;
-                return qtdComparado;
+                if (MesAtual != 0 && MesAnterior != 0)
+                {
+                    var qtdComparado = MesAtual - MesAnterior;
+                    decimal porcentagemAumento = ((decimal)qtdComparado / MesAnterior) * 100;
+
+
+                    resultado.QuantidadeComparado = qtdComparado;
+                    resultado.PorcentagemAumento = Math.Round(porcentagemAumento, 2);
+
+                    return resultado;
+                }
+                else
+                {
+                    resultado.QuantidadeComparado = 0;
+                    resultado.PorcentagemAumento = 0;
+                    return resultado;
+                }
+
+
             }
             catch (Exception ex)
             {

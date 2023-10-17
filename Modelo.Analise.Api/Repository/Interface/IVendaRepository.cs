@@ -6,9 +6,9 @@ namespace Modelo.Analise.Api.Repository.Interface
     public interface IVendaRepository
     {
         Task<List<venda>> GetVendas();
-        Task<decimal> ObterFaturamentoDeVendasComparadoMesAnterior();
+        Task<ResultadoModel> ObterFaturamentoDeVendasComparadoMesAnterior();
         Task<List<venda>> ObterTopCincoVendas();
-        Task<int> ObterQtdDeVendasComparadoMesAnterior();
+        Task<ResultadoModel> ObterQtdDeVendasComparadoMesAnterior();
         Task<List<VendaModel>> ObterDadosGraficoFrequencia();
     }
 }
