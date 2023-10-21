@@ -102,7 +102,7 @@ namespace Modelo.Analise.Api.Repository.implementation
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<List<VendaModel>> ObterDadosGraficoFrequencia()
+        public async Task<ResultadoQuadranteModel> ObterDadosGraficoFrequencia()
         {
             var dados = await _context.venda
                         .GroupBy(c => c.cliente)
@@ -114,7 +114,20 @@ namespace Modelo.Analise.Api.Repository.implementation
                         })
                         .OrderByDescending(g => g.ValorVenda)
                         .ToListAsync();
-            return dados;
+            //List<Dictionary<string, object>> resultado = dados.Select(cliente => new Dictionary<string, object> { { "venda", (decimal)cliente.ValorVenda }, { "frequencia", cliente.FrequenciaVenda } }).ToList();
+
+            var quadrante1 = dados.Where(d => d.ValorVenda > 0 && d.FrequenciaVenda > 0).ToList();
+            var quadrante2 = dados.Where(d => d.ValorVenda < 0 && d.FrequenciaVenda > 0).ToList();
+            var quadrante3 = dados.Where(d => d.ValorVenda < 0 && d.FrequenciaVenda < 0).ToList();
+            var quadrante4 = dados.Where(d => d.ValorVenda > 0 && d.FrequenciaVenda < 0).ToList();
+            var resultado = new ResultadoQuadranteModel
+            {
+                Quadrante1 = quadrante1,
+                Quadrante2 = quadrante2,
+                Quadrante3 = quadrante3,
+                Quadrante4 = quadrante4
+            };
+            return resultado;
         }
     }
 }
