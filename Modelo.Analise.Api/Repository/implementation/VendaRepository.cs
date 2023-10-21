@@ -102,9 +102,12 @@ namespace Modelo.Analise.Api.Repository.implementation
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<ResultadoQuadranteModel> ObterDadosGraficoFrequencia()
+        public async Task<ResultadoQuadranteModel> ObterDadosGraficoFrequencia(string filial)
         {
-            var dados = await _context.venda
+            List<VendaModel> dados = new List<VendaModel>();
+            if (string.IsNullOrEmpty(filial))
+            {
+                dados = await _context.venda
                         .GroupBy(c => c.cliente)
                         .Select(g => new VendaModel
                         {
@@ -114,6 +117,21 @@ namespace Modelo.Analise.Api.Repository.implementation
                         })
                         .OrderByDescending(g => g.ValorVenda)
                         .ToListAsync();
+            }
+            else
+            {
+                dados = await _context.venda
+                        .Where(f => f.filial.nome == filial)
+                        .GroupBy(c => c.cliente)
+                        .Select(g => new VendaModel
+                        {
+                            NomeClienteCompleto = g.Key.nome_completo != null ? g.Key.nome_completo : "Não informado",
+                            FrequenciaVenda = g.Count(),
+                            ValorVenda = g.Sum(v => v.total_venda)
+                        })
+                        .OrderByDescending(g => g.ValorVenda)
+                        .ToListAsync();
+            }
             //List<Dictionary<string, object>> resultado = dados.Select(cliente => new Dictionary<string, object> { { "venda", (decimal)cliente.ValorVenda }, { "frequencia", cliente.FrequenciaVenda } }).ToList();
 
             var quadrante1 = dados.Where(d => d.ValorVenda > 0 && d.FrequenciaVenda > 0).ToList();

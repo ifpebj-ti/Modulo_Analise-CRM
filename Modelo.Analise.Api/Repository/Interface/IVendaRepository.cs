@@ -9,6 +9,6 @@ namespace Modelo.Analise.Api.Repository.Interface
         Task<ResultadoModel> ObterFaturamentoDeVendasComparadoMesAnterior();
         Task<List<venda>> ObterTopCincoVendas();
         Task<ResultadoModel> ObterQtdDeVendasComparadoMesAnterior();
-        Task<ResultadoQuadranteModel> ObterDadosGraficoFrequencia();
+        Task<ResultadoQuadranteModel> ObterDadosGraficoFrequencia(string filial);
     }
 }
