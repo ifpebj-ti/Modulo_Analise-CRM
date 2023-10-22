@@ -116,14 +116,19 @@ namespace Modelo.Analise.Api.Repository.implementation
                         })
                         .OrderByDescending(g => g.ValorVenda)
                         .ToListAsync();
+            //pegar maior velor venda e frequencia
 
+            var maxValorVenda = dados.Max(d => d.ValorVenda);
+            var maxFrequencia = dados.Max(d => d.FrequenciaVenda);
 
+            var mediaQuadranteValor = maxValorVenda / 2;
+            var mediaFrequenciaValor = maxFrequencia / 2;
             //List<Dictionary<string, object>> resultado = dados.Select(cliente => new Dictionary<string, object> { { "venda", (decimal)cliente.ValorVenda }, { "frequencia", cliente.FrequenciaVenda } }).ToList();
 
-            var quadrante1 = dados.Where(d => d.ValorVenda > 0 && d.FrequenciaVenda > 0).ToList();
-            var quadrante2 = dados.Where(d => d.ValorVenda < 0 && d.FrequenciaVenda > 0).ToList();
-            var quadrante3 = dados.Where(d => d.ValorVenda < 0 && d.FrequenciaVenda < 0).ToList();
-            var quadrante4 = dados.Where(d => d.ValorVenda > 0 && d.FrequenciaVenda < 0).ToList();
+            var quadrante1 = dados.Where(d => d.ValorVenda > mediaQuadranteValor && d.FrequenciaVenda > mediaFrequenciaValor).ToList();
+            var quadrante2 = dados.Where(d => d.ValorVenda < mediaQuadranteValor && d.FrequenciaVenda > mediaFrequenciaValor).ToList();
+            var quadrante3 = dados.Where(d => d.ValorVenda < mediaQuadranteValor && d.FrequenciaVenda < mediaFrequenciaValor).ToList();
+            var quadrante4 = dados.Where(d => d.ValorVenda > mediaQuadranteValor && d.FrequenciaVenda < mediaFrequenciaValor).ToList();
             var resultado = new ResultadoQuadranteModel
             {
                 Quadrante1 = quadrante1,
