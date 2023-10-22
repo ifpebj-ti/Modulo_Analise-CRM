@@ -102,9 +102,11 @@ namespace Modelo.Analise.Api.Repository.implementation
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<List<VendaModel>> ObterDadosGraficoFrequencia()
+        public async Task<ResultadoQuadranteModel> ObterDadosGraficoFrequencia(string filial)
         {
-            var dados = await _context.venda
+            List<VendaModel> dados = new List<VendaModel>();
+            dados = await _context.venda
+                        .Where(f => (string.IsNullOrEmpty(filial) || filial == "Nenhum selecionado") || f.filial.nome == filial.ToUpper())
                         .GroupBy(c => c.cliente)
                         .Select(g => new VendaModel
                         {
@@ -114,7 +116,27 @@ namespace Modelo.Analise.Api.Repository.implementation
                         })
                         .OrderByDescending(g => g.ValorVenda)
                         .ToListAsync();
-            return dados;
+            //pegar maior velor venda e frequencia
+
+            var maxValorVenda = dados.Max(d => d.ValorVenda);
+            var maxFrequencia = dados.Max(d => d.FrequenciaVenda);
+
+            var mediaQuadranteValor = maxValorVenda / 2;
+            var mediaFrequenciaValor = maxFrequencia / 2;
+            //List<Dictionary<string, object>> resultado = dados.Select(cliente => new Dictionary<string, object> { { "venda", (decimal)cliente.ValorVenda }, { "frequencia", cliente.FrequenciaVenda } }).ToList();
+
+            var quadrante1 = dados.Where(d => d.ValorVenda > mediaQuadranteValor && d.FrequenciaVenda > mediaFrequenciaValor).ToList();
+            var quadrante2 = dados.Where(d => d.ValorVenda < mediaQuadranteValor && d.FrequenciaVenda > mediaFrequenciaValor).ToList();
+            var quadrante3 = dados.Where(d => d.ValorVenda < mediaQuadranteValor && d.FrequenciaVenda < mediaFrequenciaValor).ToList();
+            var quadrante4 = dados.Where(d => d.ValorVenda > mediaQuadranteValor && d.FrequenciaVenda < mediaFrequenciaValor).ToList();
+            var resultado = new ResultadoQuadranteModel
+            {
+                Quadrante1 = quadrante1,
+                Quadrante2 = quadrante2,
+                Quadrante3 = quadrante3,
+                Quadrante4 = quadrante4
+            };
+            return resultado;
         }
     }
 }

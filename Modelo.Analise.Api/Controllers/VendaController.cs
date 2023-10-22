@@ -52,9 +52,9 @@ namespace Modelo.Analise.Api.Controllers
         }
         [HttpGet]
         [Route("ObterFrequenciaVendas")]
-        public async Task<IActionResult> ObterFrequenciaVendas()
+        public async Task<IActionResult> ObterFrequenciaVendas(string? filial)
         {
-            var dadosFrequencia = await _vendaRepository.ObterDadosGraficoFrequencia();
+            var dadosFrequencia = await _vendaRepository.ObterDadosGraficoFrequencia(filial);
             return Ok(dadosFrequencia);
         }
     }
