@@ -7,6 +7,14 @@ on:
   workflow_dispatch:
 
 jobs:
+  discord:
+    name: Run discord bot
+    runs-on: ubuntu-latest
+    steps:
+      - uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
   build_test:
     runs-on: ubuntu-latest
     strategy:
