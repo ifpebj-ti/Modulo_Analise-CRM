@@ -12,10 +12,13 @@ namespace Modelo.Analise.Api.Repository.implementation
         {
             _context = context;
         }
+
+        
         public async Task<List<cliente>> GetCliente()
         {
             List<cliente> clientes = await _context.cliente
                 .ToListAsync();
+            var dados = await DistribuicaoAnualCliente();
 
             return clientes;
         }
@@ -52,5 +55,30 @@ namespace Modelo.Analise.Api.Repository.implementation
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<List<ClientesAnual>> DistribuicaoAnualCliente()
+        {
+            try
+            {
+                var dados = await _context.cliente
+                    .Where(c => c.data_registro.Value.Year == DateTime.Now.Year)
+                    .GroupBy(c => new { c.data_registro.Value.Month })
+                    .Select(group => new ClientesAnual
+                    {
+            
+                        Mes = group.Key.Month,
+                        Quantidade = group.Count()
+                    })
+                    .ToListAsync();
+                    
+                return dados;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }
