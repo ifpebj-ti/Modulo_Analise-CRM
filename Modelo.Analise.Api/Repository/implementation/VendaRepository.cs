@@ -102,7 +102,7 @@ namespace Modelo.Analise.Api.Repository.implementation
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<ResultadoQuadranteModel> ObterDadosGraficoFrequencia(string filial)
+        public async Task<List<VendaModel>> ObterDadosGraficoFrequencia(string filial)
         {
             List<VendaModel> dados = new List<VendaModel>();
             dados = await _context.venda
@@ -118,25 +118,25 @@ namespace Modelo.Analise.Api.Repository.implementation
                         .ToListAsync();
             //pegar maior velor venda e frequencia
 
-            var maxValorVenda = dados.Max(d => d.ValorVenda);
-            var maxFrequencia = dados.Max(d => d.FrequenciaVenda);
+            //var maxValorVenda = dados.Max(d => d.ValorVenda);
+            //var maxFrequencia = dados.Max(d => d.FrequenciaVenda);
 
-            var mediaQuadranteValor = maxValorVenda / 2;
-            var mediaFrequenciaValor = maxFrequencia / 2;
+            //var mediaQuadranteValor = maxValorVenda / 2;
+            //var mediaFrequenciaValor = maxFrequencia / 2;
             //List<Dictionary<string, object>> resultado = dados.Select(cliente => new Dictionary<string, object> { { "venda", (decimal)cliente.ValorVenda }, { "frequencia", cliente.FrequenciaVenda } }).ToList();
 
-            var quadrante1 = dados.Where(d => d.ValorVenda > mediaQuadranteValor && d.FrequenciaVenda > mediaFrequenciaValor).ToList();
-            var quadrante2 = dados.Where(d => d.ValorVenda < mediaQuadranteValor && d.FrequenciaVenda > mediaFrequenciaValor).ToList();
-            var quadrante3 = dados.Where(d => d.ValorVenda < mediaQuadranteValor && d.FrequenciaVenda < mediaFrequenciaValor).ToList();
-            var quadrante4 = dados.Where(d => d.ValorVenda > mediaQuadranteValor && d.FrequenciaVenda < mediaFrequenciaValor).ToList();
-            var resultado = new ResultadoQuadranteModel
-            {
-                Quadrante1 = quadrante1,
-                Quadrante2 = quadrante2,
-                Quadrante3 = quadrante3,
-                Quadrante4 = quadrante4
-            };
-            return resultado;
+            //var quadrante1 = dados.Where(d => d.ValorVenda > mediaQuadranteValor && d.FrequenciaVenda > mediaFrequenciaValor).ToList();
+            //var quadrante2 = dados.Where(d => d.ValorVenda < mediaQuadranteValor && d.FrequenciaVenda > mediaFrequenciaValor).ToList();
+            //var quadrante3 = dados.Where(d => d.ValorVenda < mediaQuadranteValor && d.FrequenciaVenda < mediaFrequenciaValor).ToList();
+            //var quadrante4 = dados.Where(d => d.ValorVenda > mediaQuadranteValor && d.FrequenciaVenda < mediaFrequenciaValor).ToList();
+            //var resultado = new ResultadoQuadranteModel
+            //{
+            //    Quadrante1 = quadrante1,
+            //    Quadrante2 = quadrante2,
+            //    Quadrante3 = quadrante3,
+            //    Quadrante4 = quadrante4
+            //};
+            return dados;
         }
     }
 }
