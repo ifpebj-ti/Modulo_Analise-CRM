@@ -2,6 +2,7 @@
 using Modelo.Analise.Api.Domain;
 using Modelo.Analise.Api.Model;
 using Modelo.Analise.Api.Repository.Interface;
+using System.Globalization;
 
 namespace Modelo.Analise.Api.Repository.implementation
 {
@@ -18,8 +19,6 @@ namespace Modelo.Analise.Api.Repository.implementation
         {
             List<cliente> clientes = await _context.cliente
                 .ToListAsync();
-            var dados = await DistribuicaoAnualCliente();
-
             return clientes;
         }
 
@@ -56,22 +55,28 @@ namespace Modelo.Analise.Api.Repository.implementation
             }
         }
 
-        public async Task<List<ClientesAnual>> DistribuicaoAnualCliente()
+        public async Task<List<object>> DistribuicaoAnualCliente()
         {
             try
             {
                 var dados = await _context.cliente
                     .Where(c => c.data_registro.Value.Year == DateTime.Now.Year)
-                    .GroupBy(c => new { c.data_registro.Value.Month })
-                    .Select(group => new ClientesAnual
+                    .GroupBy(c => c.data_registro.Value.Month)
+                    .Select(group => new
                     {
-            
-                        Mes = group.Key.Month,
+                        Mes = group.Key,
                         Quantidade = group.Count()
                     })
+                    .OrderBy(item => item.Mes)
                     .ToListAsync();
-                    
-                return dados;
+                var data = new List<object> { new List<object> { "Mes", "Quantidade" } };
+                foreach (var item in dados)
+                {
+                    string nomeMes = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(item.Mes);
+                    data.Add(new List<object> { nomeMes, item.Quantidade });
+                }
+
+                return data;
             }
             catch (Exception ex)
             {
