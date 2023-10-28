@@ -62,7 +62,7 @@ namespace Modelo.Analise.Api.Repository.implementation
                 var dados = await _context.cliente
                     .Where(c => c.data_registro.Value.Year == DateTime.Now.Year)
                     .GroupBy(c => c.data_registro.Value.Month)
-                    .Select(group => new
+                    .Select(group => new ClientesAnual
                     {
                         Mes = group.Key,
                         Quantidade = group.Count()
