@@ -32,6 +32,21 @@ namespace Modelo.Analise.Api.Controllers
 
             return Ok(qtd);
         }
+        [HttpGet]
+        [Route("ObterQtdClientesAnual")]
+        public async Task<IActionResult> ObterQtdClientesAnual()
+        {
+            var qtd = await _clienteRepository.DistribuicaoAnualCliente();
 
+            return Ok(qtd);
+        }
+        [HttpGet]
+        [Route("ObterClientesPorGeneroIdade")]
+        public async Task<IActionResult> ObterClientesPorGeneroIdade(string tipo)
+        {
+            var qtd = await _clienteRepository.DistribuicaoPorGenero(tipo);
+
+            return Ok(qtd);
+        }
     }
 }

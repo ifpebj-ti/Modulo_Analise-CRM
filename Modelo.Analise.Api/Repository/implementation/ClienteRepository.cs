@@ -2,6 +2,7 @@
 using Modelo.Analise.Api.Domain;
 using Modelo.Analise.Api.Model;
 using Modelo.Analise.Api.Repository.Interface;
+using System.Globalization;
 
 namespace Modelo.Analise.Api.Repository.implementation
 {
@@ -12,11 +13,12 @@ namespace Modelo.Analise.Api.Repository.implementation
         {
             _context = context;
         }
+
+        
         public async Task<List<cliente>> GetCliente()
         {
             List<cliente> clientes = await _context.cliente
                 .ToListAsync();
-
             return clientes;
         }
 
@@ -52,5 +54,103 @@ namespace Modelo.Analise.Api.Repository.implementation
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<List<object>> DistribuicaoAnualCliente()
+        {
+            try
+            {
+                var dados = await _context.cliente
+                    .Where(c => c.data_registro.Value.Year == DateTime.Now.Year)
+                    .GroupBy(c => c.data_registro.Value.Month)
+                    .Select(group => new ClientesAnual
+                    {
+                        Mes = group.Key,
+                        Quantidade = group.Count()
+                    })
+                    .OrderBy(item => item.Mes)
+                    .ToListAsync();
+                var data = new List<object> { new List<object> { "Mes", "Quantidade" } };
+                foreach (var item in dados)
+                {
+                    string nomeMes = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(item.Mes);
+                    data.Add(new List<object> { nomeMes, item.Quantidade });
+                }
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<List<object>> DistribuicaoPorGenero(string tipo)
+        {
+            try
+            {
+                if (tipo.ToUpper() == "GÊNERO")
+                {
+                    var dados = await _context.cliente
+                    .GroupBy(c => c.sexo)
+                    .Select(group => new
+                    {
+                        Sexo = group.Key,
+                        Quantidade = group.Count()
+                    })
+                    .OrderBy(cliente => cliente.Quantidade)
+                    .ToListAsync();
+                    var data = new List<object> { new List<object> { "Sexo", "Quantidade" } };
+                    foreach (var cliente in dados)
+                    {
+                        data.Add(new List<object> { cliente.Sexo, cliente.Quantidade });
+                    }
+                    return data;
+                }
+                else
+                {
+                    var dadosIdade = await _context.cliente
+                                      .Select(c => new
+                                      {
+                                          Idade = DateTime.Now.Year - c.data_nascimento.Year
+                                      })
+                                      .ToListAsync();
+                    var faixasEtarias = new List<Tuple<int, int>>
+                    {
+                        new Tuple<int, int>(10, 20),
+                        new Tuple<int, int>(21, 29),
+                        new Tuple<int, int>(30, 39),
+                        new Tuple<int, int>(40, 49),
+                        new Tuple<int, int>(50, 59),
+                        new Tuple<int, int>(60, 69),
+                        new Tuple<int, int>(70, 79),
+                        new Tuple<int, int>(80, 89),
+                    };
+
+                    var dadosParaGrafico = new List<object>
+                    {
+                        new List<object> {"Idade", "Quantidade"}
+                    };
+                    foreach (var faixa in faixasEtarias)
+                    {
+                        int quantidade = dadosIdade.Count(c => c.Idade >= faixa.Item1 && c.Idade <= faixa.Item2);
+                        if(quantidade > 0)
+                        {
+                            dadosParaGrafico.Add(new List<object> { $"{faixa.Item1} - {faixa.Item2}", quantidade });
+                        }
+                        
+                    }
+                    return dadosParaGrafico;
+                }
+
+    
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }
