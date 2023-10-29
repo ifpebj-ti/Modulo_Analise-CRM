@@ -142,7 +142,8 @@ namespace Modelo.Analise.Api.Repository.implementation
                     }
                     return dadosParaGrafico;
                 }
-                
+
+    
             }
             catch (Exception ex)
             {
