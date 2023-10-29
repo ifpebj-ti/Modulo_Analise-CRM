@@ -8,5 +8,6 @@ namespace Modelo.Analise.Api.Repository.Interface
         Task<List<cliente>> GetCliente();
         Task<ResultadoModel> ObterQuantidadeDeClientesComparadoMesAnterior();
         Task<List<object>> DistribuicaoAnualCliente();
+        Task<List<object>> DistribuicaoPorGenero(string tipo);
     }
 }
