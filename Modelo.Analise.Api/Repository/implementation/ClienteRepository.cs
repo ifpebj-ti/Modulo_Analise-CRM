@@ -100,7 +100,7 @@ namespace Modelo.Analise.Api.Repository.implementation
                     })
                     .OrderBy(cliente => cliente.Quantidade)
                     .ToListAsync();
-                    var data = new List<object> { new List<object> { "Sexo", "Quantidade" } };
+                    var data = new List<object> { new List<object> { "Gênero", "Quantidade" } };
                     foreach (var cliente in dados)
                     {
                         data.Add(new List<object> { cliente.Sexo, cliente.Quantidade });
