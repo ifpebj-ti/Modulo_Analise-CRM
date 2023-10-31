@@ -89,7 +89,7 @@ namespace Modelo.Analise.Api.Repository.implementation
         {
             try
             {
-                if (tipo.ToUpper() == "GÊNERO")
+                if (tipo.ToUpper() == "GENERO")
                 {
                     var dados = await _context.cliente
                     .GroupBy(c => c.sexo)
