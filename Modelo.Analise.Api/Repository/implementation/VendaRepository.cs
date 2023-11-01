@@ -32,7 +32,7 @@ namespace Modelo.Analise.Api.Repository.implementation
                     decimal porcentagemAumento = ((decimal)qtdComparado / MesAnterior) * 100;
 
 
-                    resultado.FaturamentoComparado = qtdComparado;
+                    resultado.FaturamentoComparado = MesAtual;
                     resultado.PorcentagemAumento = Math.Round(porcentagemAumento, 2);
 
                     return resultado;
@@ -82,7 +82,7 @@ namespace Modelo.Analise.Api.Repository.implementation
                     decimal porcentagemAumento = ((decimal)qtdComparado / MesAnterior) * 100;
 
 
-                    resultado.QuantidadeComparado = qtdComparado;
+                    resultado.QuantidadeComparado = MesAtual;
                     resultado.PorcentagemAumento = Math.Round(porcentagemAumento, 2);
 
                     return resultado;
