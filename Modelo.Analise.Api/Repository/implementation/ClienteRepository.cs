@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Modelo.Analise.Api.Controllers;
 using Modelo.Analise.Api.Domain;
 using Modelo.Analise.Api.Model;
 using Modelo.Analise.Api.Repository.Interface;
@@ -9,9 +10,11 @@ namespace Modelo.Analise.Api.Repository.implementation
     public class ClienteRepository : IClienteRepository
     {
         private readonly ContextBd _context;
-        public ClienteRepository(ContextBd context)
+        private readonly ILogger<ClienteRepository> _logger;
+        public ClienteRepository(ContextBd context, ILogger<ClienteRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         
@@ -52,6 +55,7 @@ namespace Modelo.Analise.Api.Repository.implementation
             {
 
                 throw new Exception(ex.Message);
+                _logger.LogError("Ocorreu uma exception :",ex.Message);
             }
         }
 
@@ -149,6 +153,7 @@ namespace Modelo.Analise.Api.Repository.implementation
             {
 
                 throw new Exception(ex.Message);
+                _logger.LogError("Ocorreu uma exception :", ex.Message);
             }
         }
 

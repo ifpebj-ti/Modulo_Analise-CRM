@@ -12,9 +12,11 @@ namespace Modelo.Analise.Api.Controllers
     public class ClienteController : ControllerBase
     {
         private readonly IClienteRepository _clienteRepository;
-        public ClienteController(IClienteRepository clienteRepository)
+        private readonly ILogger<ClienteController> _logger;
+        public ClienteController(IClienteRepository clienteRepository, ILogger<ClienteController> logger)
         {
-            _clienteRepository = clienteRepository; 
+            _clienteRepository = clienteRepository;
+            _logger = logger;
         }
         [HttpGet(Name = "GetCliente")]
         public async Task<IActionResult> Get()
@@ -29,7 +31,6 @@ namespace Modelo.Analise.Api.Controllers
         public async Task<IActionResult> ObterQtdClientesComparadoMesAnterior()
         {
             var qtd = await _clienteRepository.ObterQuantidadeDeClientesComparadoMesAnterior();
-
             return Ok(qtd);
         }
         [HttpGet]
