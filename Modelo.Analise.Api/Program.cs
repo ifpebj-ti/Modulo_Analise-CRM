@@ -2,9 +2,17 @@ using Microsoft.EntityFrameworkCore;
 using Modelo.Analise.Api.Repository;
 using Modelo.Analise.Api.Repository.implementation;
 using Modelo.Analise.Api.Repository.Interface;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
 
+var logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.File("logs/arquivo.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 //configuracao para context do banco de dados
 builder.Services.AddDbContext<ContextBd>(options =>
     options.UseNpgsql(builder.Configuration["ConnectionStrings"])
