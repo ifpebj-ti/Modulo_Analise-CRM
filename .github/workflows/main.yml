@@ -51,10 +51,33 @@ jobs:
       run: |
         curl -fsSL https://raw.githubusercontent.com/ZupIT/horusec/main/deployments/scripts/install.sh | bash -s latest
         horusec start -p="./" -e="true" --disable-docker="true" --enable-git-history="true" --enable-commit-author="true"
+
+  sonarqube:
+    runs-on: ubuntu-latest
+    needs: horusec-security
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        # Disabling shallow clones is recommended for improving the relevancy of reporting
+        fetch-depth: 0
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        args: >
+          -Dsonar.qualitygate.wait=true
+    - name: SonarQube Quality Gate check
+      id: sonarqube-quality-gate-check
+      uses: sonarsource/sonarqube-quality-gate-action@master
+      # Force to fail step after specific time.
+      timeout-minutes: 5
+      env:
+       SONAR_TOKEN: ${{ secrets.SONAR_PROJECT_TOKEN }}
   
   docker-build:
     name: Build Docker image
-    needs: horusec-security
+    needs: sonarqube
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
