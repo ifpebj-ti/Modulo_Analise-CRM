@@ -151,9 +151,9 @@ namespace Modelo.Analise.Api.Repository.implementation
             }
             catch (Exception ex)
             {
-
-                throw new Exception(ex.Message);
                 _logger.LogError("Ocorreu uma exception :", ex.Message);
+                throw new Exception(ex.Message);
+                
             }
         }
 
