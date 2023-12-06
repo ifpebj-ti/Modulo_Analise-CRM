@@ -15,7 +15,7 @@ builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 //configuracao para context do banco de dados
 builder.Services.AddDbContext<ContextBd>(options =>
-    options.UseNpgsql(builder.Configuration["ConnectionStrings"])
+    options.UseNpgsql(Environment.GetEnvironmentVariable("CONNECTION_STRING_ANALISE"))
 );
 // Add services to the container.
 
