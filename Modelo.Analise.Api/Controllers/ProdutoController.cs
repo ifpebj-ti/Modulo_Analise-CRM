@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Modelo.Analise.Api.Domain;
 using Modelo.Analise.Api.Repository.Interface;
 
@@ -6,6 +7,7 @@ namespace Modelo.Analise.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ProdutoController : ControllerBase
     {
         private readonly IProdutoRepository _produtoRepository;

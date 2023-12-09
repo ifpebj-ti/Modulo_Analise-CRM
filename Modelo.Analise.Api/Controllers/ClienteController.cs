@@ -4,11 +4,13 @@ using Modelo.Analise.Api.Repository.Interface;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using Modelo.Analise.Api.Repository.implementation;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Modelo.Analise.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ClienteController : ControllerBase
     {
         private readonly IClienteRepository _clienteRepository;
